@@ -1,15 +1,23 @@
 {
   "name": "date-range-picker-v2",
   "version": "1.0.0",
-  "description": "",
+  "description": "Free open source date range picker for MUI using the free version of MUI",
   "main": "index.js",
   "scripts": {
     "test:build": "npx webpack --mode=development",
     "test:start": "npx webpack serve --mode=development"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "date",
+    "range",
+    "picker",
+    "mui",
+    "material-ui",
+    "free",
+    "open-source"
+  ],
+  "author": "Inn Col Systems S.A.S. de C.V.",
+  "license": "GPL",
   "devDependencies": {
     "@babel/core": "^7.23.9",
     "@babel/preset-env": "^7.23.9",
