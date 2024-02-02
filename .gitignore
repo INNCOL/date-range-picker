@@ -129,10 +129,10 @@ dist
 .yarn/install-state.gz
 .pnp.*
 # Dependency directories
-node_modules/
+node_modules
 
 # Build files
-/dist/
+dist
 
 # IDE/Editor files
 .vscode/
