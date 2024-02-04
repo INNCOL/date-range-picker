@@ -8,7 +8,7 @@
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "test:build": "npx webpack --mode=production",
+    "test:build": "npx webpack --mode=development",
     "test:start": "npx webpack serve --mode=development",
     "preversion": "npm run build",
     "version": "npm publish"
@@ -23,6 +23,8 @@
     }
   },
   "keywords": [
+    "react",
+    "material",
     "date-range",
     "date",
     "range",

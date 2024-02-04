@@ -27,18 +27,18 @@ yarn add inncol-date-range-picker
 
 ```tsx
 import React from 'react';
-import Calendar, { Dates } from 'inncol-date-range-picker';
+import { DateRangePicker, Dates } from 'inncol-date-range-picker';
 
 function App() {
 
-  const handleChange = (date: Dates ) => {
+  const handleChange = (date: Dates) => {
     console.log('Selected date range:', date);
   };
 
   return (
     <div>
       <h1>Calendar Component Demo</h1>
-      <Calendar
+      <DateRangePicker
         startDate={new Date()}
         endDate={new Date()}
         onChange={handleChange}
@@ -58,7 +58,7 @@ export default App;
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit any issues or pull requests.
+at [Inncol](https://www.inncol.com.mx/) Contributions are welcome! Please feel free to submit any issues or pull requests.
 
 ## License
 This project is licensed under the GNU General Public License Version 3, 29 June 2007 - see the LICENSE file for details.

@@ -6,12 +6,14 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import MenuList from '@mui/material/MenuList';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import { format, getMonth, getYear, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { es } from 'date-fns/locale';
 import CalendarMonth from '@mui/icons-material/CalendarMonth';
+import Close from '@mui/icons-material/Close';
 
 export interface Dates {
   start: Date;
@@ -32,7 +34,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
   const [selectedMonth, setSelectedMonth] = useState(getMonth(startDate));
   const [selectedYear, setSelectedYear] = useState(getYear(startDate));
 
-  const handleClick = (event: { currentTarget: React.SetStateAction<null>; }) => {
+  const handleClick = (event: any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
@@ -45,11 +47,14 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
   const handleDateSelect = (date: Date) => {
     if (!selectedStartDate) {
       setSelectedStartDate(date);
+      onChange({ start: date, end: null });
     } else if (!selectedEndDate) {
       setSelectedEndDate(date);
+      onChange({ start: selectedStartDate, end: date });
     } else {
       setSelectedStartDate(date);
       setSelectedEndDate(null);
+      onChange({ start: date, end: null });
     }
   };
 
@@ -105,11 +110,10 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
         />
       </FormControl>
       <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="auto" sx={{ padding: '1rem' }} >
-        <Paper>
+        <Paper sx={{ padding: '1rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem' }}>
-              <FormControl>
-                <InputLabel id="month-select-label">Mes</InputLabel>
+              <FormControl fullWidth>
                 <Select
                   labelId="month-select-label"
                   id="month-select"
@@ -128,7 +132,6 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
                 </Select>
               </FormControl>
               <FormControl>
-                <InputLabel id="year-select-label">Año</InputLabel>
                 <Select
                   labelId="year-select-label"
                   id="year-select"
@@ -148,8 +151,11 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
               {renderDays()}
             </MenuList>
           </div>
-          <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button onClick={handleClose}>Seleccionar</Button>
+            <IconButton onClick={handleClick}>
+              <Close />
+            </IconButton>
           </div>
         </Paper>
       </Popper>
