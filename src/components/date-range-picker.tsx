@@ -15,7 +15,7 @@ import CalendarMonth from '@mui/icons-material/CalendarMonth';
 
 export interface Dates {
   start: Date;
-  end?: Date;
+  end: Date | null;
 }
 
 interface DateRangePickerProps {
@@ -28,18 +28,18 @@ function DateRangePicker({ onChange, startDate = new Date(), endDate }: DateRang
   const [dateRangeText, setDateRangeText] = React.useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState(startDate);
-  const [selectedEndDate, setSelectedEndDate] = useState(endDate);
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(endDate);
   const [selectedMonth, setSelectedMonth] = useState(getMonth(startDate));
   const [selectedYear, setSelectedYear] = useState(getYear(startDate));
 
-  const handleClick = (event) => {
+  const handleClick = (event: { currentTarget: React.SetStateAction<null>; }) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
     onChange({ start: selectedStartDate, end: selectedEndDate });
-    setDateRangeText(`${format(selectedStartDate, 'dd/MM/yyyy')} - ${format(selectedEndDate, 'dd/MM/yyyy')}`)
+    setDateRangeText(`${format(selectedStartDate, 'dd/MM/yyyy')} - ${format(selectedEndDate!, 'dd/MM/yyyy')}`)
   };
 
   const handleDateSelect = (date: Date) => {
@@ -53,11 +53,11 @@ function DateRangePicker({ onChange, startDate = new Date(), endDate }: DateRang
     }
   };
 
-  const handleMonthSelect = (event) => {
+  const handleMonthSelect = (event: { target: { value: React.SetStateAction<number>; }; }) => {
     setSelectedMonth(event.target.value);
   };
 
-  const handleYearSelect = (event) => {
+  const handleYearSelect = (event: { target: { value: React.SetStateAction<number>; }; }) => {
     setSelectedYear(event.target.value);
   };
 
@@ -98,9 +98,8 @@ function DateRangePicker({ onChange, startDate = new Date(), endDate }: DateRang
           disabled
           endAdornment={
             <InputAdornment position="end">
-              <CalendarMonth
-                onClick={handleClick}
-              />
+              {/* @ts-ignore */}
+              <CalendarMonth onClick={handleClick} />
             </InputAdornment>
           }
         />
@@ -115,6 +114,7 @@ function DateRangePicker({ onChange, startDate = new Date(), endDate }: DateRang
                   labelId="month-select-label"
                   id="month-select"
                   value={selectedMonth}
+                  /* @ts-ignore */
                   onChange={handleMonthSelect}
                 >
                   {Array.from({ length: 12 }, (_, i) => (
@@ -133,6 +133,7 @@ function DateRangePicker({ onChange, startDate = new Date(), endDate }: DateRang
                   labelId="year-select-label"
                   id="year-select"
                   value={selectedYear}
+                  /* @ts-ignore */
                   onChange={handleYearSelect}
                 >
                   {Array.from({ length: 10 }, (_, i) => (
