@@ -9,6 +9,12 @@ A customizable and easy-to-use calendar component built with React and Material-
 - Display the selected date range in a text field.
 - Easily integrate into your React applications.
 
+## Test component locally
+run webpack server 
+```bash
+npm run test:start
+```
+
 ## Installation
 
 To install the calendar component, simply run:
@@ -50,6 +56,10 @@ function App() {
 export default App;
 ```
 
+## Example
+
+![DateRangePicker](https://www.inncol.com.mx/assets/date-range-picker.png "DateRangePicker Image")
+ 
 ## Props
 
 - `startDate` (Date): The start date of the selected date range. Defaults to the current date.
