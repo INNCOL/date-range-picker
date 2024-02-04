@@ -14,20 +14,20 @@ A customizable and easy-to-use calendar component built with React and Material-
 To install the calendar component, simply run:
 
 ```bash
-npm install @inncol/date-range-picker
+npm install inncol-date-range-picker
 ```
 
 or 
 
 ```bash
-yarn add @inncol/date-range-picker
+yarn add inncol-date-range-picker
 ```
 
 ## Usage
 
 ```tsx
 import React from 'react';
-import Calendar, { Dates } from '@inncol/date-range-picker';
+import Calendar, { Dates } from 'inncol-date-range-picker';
 
 function App() {
 

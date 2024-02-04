@@ -5,7 +5,10 @@ module.exports = {
     entry: './src/index.tsx',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: 'index.js',
+        libraryTarget: 'umd',
+        library: 'inncol-date-range-picker',
+        umdNamedDefine: true,
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
@@ -25,7 +28,7 @@ module.exports = {
         }),
     ],
     devServer: {
-        static: path.join(__dirname, 'dist'), // Serve files from the dist directory
+        static: path.join(__dirname, 'dist'),
         compress: true,
         port: 3000,
     },

@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
-import { Popper, MenuItem, Select, FormControl, InputLabel, Paper, Button, MenuList, TextField, OutlinedInput, InputAdornment } from '@mui/material';
-import { eachDayOfInterval, endOfMonth, startOfMonth, getMonth, getYear, format } from 'date-fns';
+import Popper from '@mui/material/Popper';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import MenuList from '@mui/material/MenuList';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import { format, getMonth, getYear, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { CalendarMonth } from '@mui/icons-material';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
 
 export interface Dates {
   start: Date;
   end?: Date;
 }
 
-interface CalendarProps {
+interface DateRangePickerProps {
   startDate: Date;
   endDate: Date;
   onChange: (date: Dates) => void;
 }
 
-function Calendar({ onChange, startDate = new Date(), endDate }: CalendarProps) {
+function DateRangePicker({ onChange, startDate = new Date(), endDate }: DateRangePickerProps) {
   const [dateRangeText, setDateRangeText] = React.useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState(startDate);
@@ -147,4 +156,4 @@ function Calendar({ onChange, startDate = new Date(), endDate }: CalendarProps) 
   );
 }
 
-export default Calendar;
+export default DateRangePicker;
