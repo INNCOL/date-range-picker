@@ -1,7 +1,6 @@
-// src/index.tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DateRangePicker from './components/DateRangePicker';
+import DateRangePicker from './components';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline, createTheme } from '@mui/material';
 

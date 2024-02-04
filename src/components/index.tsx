@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Calendar, { Dates } from './Calendar';
 
-function DateRangePicker() {
+export default function () {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
 
@@ -12,14 +12,11 @@ function DateRangePicker() {
     }
 
     return (
-        <div>
-            <Calendar
-                startDate={startDate}
-                endDate={endDate}
-                onChange={onChange}
-            />
-        </div>
+        <Calendar
+            startDate={startDate}
+            endDate={endDate}
+            onChange={onChange}
+        />
     );
 }
 
-export default DateRangePicker;
