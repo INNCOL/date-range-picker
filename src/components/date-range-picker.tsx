@@ -24,7 +24,7 @@ interface DateRangePickerProps {
   onChange: (date: Dates) => void;
 }
 
-function DateRangePicker({ onChange, startDate = new Date(), endDate }: DateRangePickerProps) {
+export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, startDate = new Date(), endDate }) => {
   const [dateRangeText, setDateRangeText] = React.useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState(startDate);
@@ -156,5 +156,3 @@ function DateRangePicker({ onChange, startDate = new Date(), endDate }: DateRang
     </div>
   );
 }
-
-export default DateRangePicker;

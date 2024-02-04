@@ -1,6 +1,6 @@
 {
   "name": "inncol-date-range-picker",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Free open source date range picker for MUI using the free version of MUI/ MUI core",
   "main": "dist/index.js",
   "private": false,
