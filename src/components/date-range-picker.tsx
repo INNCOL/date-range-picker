@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuList from '@mui/material/MenuList';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import { format, getMonth, getYear, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
-import { es } from 'date-fns/locale';
 import CalendarMonth from '@mui/icons-material/CalendarMonth';
 import Close from '@mui/icons-material/Close';
+import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import React, { useState } from 'react';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { endOfMonth, eachDayOfInterval, format, getMonth, getYear, startOfMonth } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 export interface Dates {
   start: Date;
@@ -58,12 +57,12 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
     }
   };
 
-  const handleMonthSelect = (event: { target: { value: React.SetStateAction<number>; }; }) => {
-    setSelectedMonth(event.target.value);
+  const handleMonthSelect = (event: SelectChangeEvent<string>) => {
+    setSelectedMonth(Number(event.target.value));
   };
 
-  const handleYearSelect = (event: { target: { value: React.SetStateAction<number>; }; }) => {
-    setSelectedYear(event.target.value);
+  const handleYearSelect = (event: SelectChangeEvent<string>) => {
+    setSelectedYear(Number(event.target.value));
   };
 
   const generateDays = () => {
@@ -117,8 +116,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
                 <Select
                   labelId="month-select-label"
                   id="month-select"
-                  value={selectedMonth}
-                  /* @ts-ignore */
+                  value={selectedMonth.toString()}
                   onChange={handleMonthSelect}
                 >
                   {Array.from({ length: 12 }, (_, i) => (
@@ -135,8 +133,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
                 <Select
                   labelId="year-select-label"
                   id="year-select"
-                  value={selectedYear}
-                  /* @ts-ignore */
+                  value={selectedYear.toString()}
                   onChange={handleYearSelect}
                 >
                   {Array.from({ length: 10 }, (_, i) => (
