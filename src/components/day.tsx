@@ -10,19 +10,19 @@ interface DayProps extends MenuItemProps {
 
 export const Day = styled(MenuItem) <DayProps>`
     ${({ isStart }) => isStart && `
-        font-weight: bold;
-        background-color: darkgray;
-        color: white;
-        border-bottom-left-radius: 1rem;
-        border-top-left-radius: 1rem;
+        font-weight: bold !important;
+        background-color: darkgray !important;
+        color: white !important;
+        border-bottom-left-radius: 1rem !important;
+        border-top-left-radius: 1rem !important;
     `}
 
     ${({ isEnd }) => isEnd && `
-        font-weight: bold;
-        background-color: darkgray;
-        color: white;
-        border-top-right-radius: 1rem;
-        border-bottom-right-radius: 1rem;
+        font-weight: bold !important;
+        background-color: darkgray !important;
+        color: white !important;
+        border-top-right-radius: 1rem !important;
+        border-bottom-right-radius: 1rem !important;
     `}
 
     ${({ isInRange }) => isInRange && `
