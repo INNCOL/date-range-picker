@@ -1,18 +1,17 @@
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import CalendarMonth from '@mui/icons-material/CalendarMonth';
 import Close from '@mui/icons-material/Close';
-import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
-import React, { useState } from 'react';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 import { endOfMonth, eachDayOfInterval, format, getMonth, getYear, startOfMonth } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { Day } from './day';
+import { MonthSelect } from './month-select';
+import { YearSelect } from './year-select';
+import { InputRange } from './input-range';
+import { Box, ClickAwayListener } from '@mui/material';
 
 export interface Dates {
   start: Date;
@@ -33,7 +32,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
   const [selectedMonth, setSelectedMonth] = useState(getMonth(startDate));
   const [selectedYear, setSelectedYear] = useState(getYear(startDate));
 
-  const handleClick = (event: any) => {
+  const toggleCalendar = (event: any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
@@ -73,89 +72,58 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
 
   const renderDays = () => {
     const days = generateDays();
-    return days.map((date) => (
-      <MenuItem
-        key={date.toISOString()}
-        onClick={() => handleDateSelect(date)}
-        style={
-          date.getTime() === startDate?.getTime()
-            ? { fontWeight: 'bold', backgroundColor: 'darkgray', color: 'white' }
-            : date.getTime() === endDate?.getTime()
-              ? { fontWeight: 'bold', backgroundColor: 'gray', color: 'white' }
-              : selectedStartDate && selectedEndDate && date > selectedStartDate && date < selectedEndDate
-                ? { backgroundColor: 'lightgray' }
-                : {}
-        }
-      >
-        {date.getDate()}
-      </MenuItem>
-    ));
+    return days.map((date) => {
+      const isInRange = selectedStartDate && selectedEndDate && date > selectedStartDate && date < selectedEndDate;
+
+      return (
+        <Day
+          key={date.toISOString()}
+          onClick={() => handleDateSelect(date)}
+          isStart={date.getTime() === startDate?.getTime()}
+          isEnd={date.getTime() === endDate?.getTime()}
+          isInRange={isInRange}
+        >
+          {date.getDate()}
+        </Day>
+      )
+    });
   };
 
+  const onClickAway = () => {
+    setAnchorEl(null);
+  }
+
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
-        <OutlinedInput
-          id="date-range-input"
-          type="text"
-          value={dateRangeText}
-          disabled
-          endAdornment={
-            <InputAdornment position="end">
-              {/* @ts-ignore */}
-              <CalendarMonth onClick={handleClick} />
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="auto" sx={{ padding: '1rem' }} >
-        <Paper sx={{ padding: '1rem' }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem' }}>
-              <FormControl fullWidth>
-                <Select
-                  labelId="month-select-label"
-                  id="month-select"
+    <ClickAwayListener mouseEvent="onMouseDown"
+      touchEvent="onTouchStart" onClickAway={onClickAway}>
+      <Box sx={{ position: 'relative' }}>
+        <InputRange value={dateRangeText} onIconClick={toggleCalendar} />
+        <Popper style={{ zIndex: 1 }} open={Boolean(anchorEl)} anchorEl={anchorEl} placement="auto" sx={{ padding: '1rem' }} >
+          <Paper sx={{ padding: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', gap: '1rem' }}>
+                <MonthSelect
                   value={selectedMonth.toString()}
                   onChange={handleMonthSelect}
-                >
-                  {Array.from({ length: 12 }, (_, i) => (
-                    <MenuItem key={i} value={i}>
-                      {
-                        format(new Date(0, i), 'MMMM', { locale: es })
-                          .replace(/^\w/, (c) => c.toUpperCase())
-                      }
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl>
-                <Select
-                  labelId="year-select-label"
-                  id="year-select"
-                  value={selectedYear.toString()}
+                />
+                <YearSelect
+                  value={selectedYear}
                   onChange={handleYearSelect}
-                >
-                  {Array.from({ length: 10 }, (_, i) => (
-                    <MenuItem key={i} value={selectedYear - 5 + i}>
-                      {selectedYear - 5 + i}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                />
+              </div>
+              <MenuList style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
+                {renderDays()}
+              </MenuList>
             </div>
-            <MenuList style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
-              {renderDays()}
-            </MenuList>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button onClick={handleClose}>Seleccionar</Button>
-            <IconButton onClick={handleClick}>
-              <Close />
-            </IconButton>
-          </div>
-        </Paper>
-      </Popper>
-    </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button onClick={handleClose}>Seleccionar</Button>
+              <IconButton onClick={toggleCalendar}>
+                <Close />
+              </IconButton>
+            </div>
+          </Paper>
+        </Popper>
+      </Box>
+    </ClickAwayListener>
   );
 }
