@@ -65,11 +65,11 @@
     "rimraf": "^5.0.5"
   },
   "bugs": {
-    "url": "https://github.com/INNCOL/date-time-picker/issues"
+    "url": "https://github.com/INNCOL/date-range-picker/issues"
   },
   "homepage": "https://www.inncol.com.mx",
   "repository": {
-    "url": "https://github.com/INNCOL/date-time-picker",
+    "url": "https://github.com/INNCOL/date-range-picker",
     "type": "github"
   },
   "maintainers": [
