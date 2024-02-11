@@ -6,10 +6,13 @@ export const TestComponent = () => {
     const [endDate, setEndDate] = React.useState<Date>(new Date());
 
     const handleOnDateRange = ({ start, end }: Dates) => {
-        setStartDate(start);
+        if (start)
+            setStartDate(start);
+        
         if (end)
             setEndDate(end)
     }
+
     return <div style={{ display: 'flex', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
         <h1>
             Test for Date Range Picker

@@ -5,32 +5,37 @@ import IconButton from '@mui/material/IconButton';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
-import { SelectChangeEvent } from '@mui/material/Select';
+import Box from '@mui/material/Box';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardDoubleArrowLeft from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRight from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { endOfMonth, eachDayOfInterval, format, getMonth, getYear, startOfMonth } from 'date-fns';
+import { es } from 'date-fns/locale';
+
 import { Day } from './day';
-import { MonthSelect } from './month-select';
-import { YearSelect } from './year-select';
 import { InputRange } from './input-range';
-import { Box, ClickAwayListener } from '@mui/material';
 
 export interface Dates {
-  start: Date;
+  start: Date | null;
   end: Date | null;
 }
 
 interface DateRangePickerProps {
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date;
+  endDate?: Date;
   onChange: (date: Dates) => void;
 }
 
-export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, startDate = new Date(), endDate }) => {
+export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, startDate = null, endDate = null }) => {
   const [dateRangeText, setDateRangeText] = React.useState('');
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedStartDate, setSelectedStartDate] = useState(startDate);
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(startDate);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(endDate);
-  const [selectedMonth, setSelectedMonth] = useState(getMonth(startDate));
-  const [selectedYear, setSelectedYear] = useState(getYear(startDate));
+  const today = new Date()
+  const [selectedMonth, setSelectedMonth] = useState(getMonth(today));
+  const [selectedYear, setSelectedYear] = useState(getYear(today));
 
   const toggleCalendar = (event: any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -39,29 +44,19 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
   const handleClose = () => {
     setAnchorEl(null);
     onChange({ start: selectedStartDate, end: selectedEndDate });
-    setDateRangeText(`${format(selectedStartDate, 'dd/MM/yyyy')} - ${format(selectedEndDate!, 'dd/MM/yyyy')}`)
+    setDateRangeText(`${format(selectedStartDate!, 'dd/MM/yyyy')} - ${format(selectedEndDate!, 'dd/MM/yyyy')}`)
   };
 
   const handleDateSelect = (date: Date) => {
+
     if (!selectedStartDate) {
       setSelectedStartDate(date);
-      onChange({ start: date, end: null });
-    } else if (!selectedEndDate) {
+    } else if (!selectedEndDate && selectedStartDate.getTime() < date.getTime()) {
       setSelectedEndDate(date);
-      onChange({ start: selectedStartDate, end: date });
     } else {
-      setSelectedStartDate(date);
       setSelectedEndDate(null);
-      onChange({ start: date, end: null });
+      setSelectedStartDate(date);
     }
-  };
-
-  const handleMonthSelect = (event: SelectChangeEvent<string>) => {
-    setSelectedMonth(Number(event.target.value));
-  };
-
-  const handleYearSelect = (event: SelectChangeEvent<string>) => {
-    setSelectedYear(Number(event.target.value));
   };
 
   const generateDays = () => {
@@ -79,8 +74,8 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
         <Day
           key={date.toISOString()}
           onClick={() => handleDateSelect(date)}
-          isStart={date.getTime() === startDate?.getTime()}
-          isEnd={date.getTime() === endDate?.getTime()}
+          isStart={date.getTime() === selectedStartDate?.getTime()}
+          isEnd={date.getTime() === selectedEndDate?.getTime()}
           isInRange={isInRange}
         >
           {date.getDate()}
@@ -93,6 +88,42 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
     setAnchorEl(null);
   }
 
+  const nextMonth = () => {
+    if (selectedMonth == 11) {
+      setSelectedYear(selectedYear + 1)
+      setSelectedMonth(0)
+      return;
+    }
+    setSelectedMonth(selectedMonth + 1);
+  }
+
+  const prevMonth = () => {
+    if (selectedMonth == 0) {
+      setSelectedYear(selectedYear - 1)
+      setSelectedMonth(11)
+      return;
+    }
+
+    setSelectedMonth(selectedMonth - 1);
+  }
+
+  const nextYear = () => {
+    setSelectedYear(selectedYear + 1)
+  }
+
+  const prevYear = () => {
+    setSelectedYear(selectedYear - 1)
+  }
+
+  const clean = () => {
+    setSelectedStartDate(new Date())
+    setSelectedEndDate(null)
+    setSelectedMonth(getMonth(today))
+    setSelectedYear(getYear(today))
+    setAnchorEl(null)
+    setDateRangeText('')
+  }
+
   return (
     <ClickAwayListener mouseEvent="onMouseDown"
       touchEvent="onTouchStart" onClickAway={onClickAway}>
@@ -101,15 +132,21 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
         <Popper style={{ zIndex: 1 }} open={Boolean(anchorEl)} anchorEl={anchorEl} placement="auto" sx={{ padding: '1rem' }} >
           <Paper sx={{ padding: '1rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', gap: '1rem' }}>
-                <MonthSelect
-                  value={selectedMonth.toString()}
-                  onChange={handleMonthSelect}
-                />
-                <YearSelect
-                  value={selectedYear}
-                  onChange={handleYearSelect}
-                />
+              <div style={{ display: 'flex', justifyContent: 'space-between', justifyItems: "center", padding: '1rem', gap: '1rem' }}>
+                <IconButton onClick={prevYear}>
+                  <KeyboardDoubleArrowLeft />
+                </IconButton>
+                <IconButton onClick={prevMonth}>
+                  <KeyboardArrowLeft />
+                </IconButton>
+                <strong style={{ display: 'flex', alignItems: 'center' }}>{`${format(new Date(0, selectedMonth), 'MMMM', { locale: es })
+                  .replace(/^\w/, (c) => c.toUpperCase())} ${selectedYear}`}</strong>
+                <IconButton onClick={nextMonth}>
+                  <KeyboardArrowRight />
+                </IconButton>
+                <IconButton onClick={nextYear}>
+                  <KeyboardDoubleArrowRight />
+                </IconButton>
               </div>
               <MenuList style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
                 {renderDays()}
@@ -117,6 +154,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Button onClick={handleClose}>Seleccionar</Button>
+              <Button onClick={clean}>Limpiar</Button>
               <IconButton onClick={toggleCalendar}>
                 <Close />
               </IconButton>

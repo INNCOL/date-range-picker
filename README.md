@@ -60,7 +60,7 @@ export default App;
 
 ## Example
 
-![DateRangePicker](https://www.inncol.com.mx/assets/date-range-picker.png "DateRangePicker Image")
+![DateRangePicker](https://storage.googleapis.com/blog_imgs/date-range-v-1.1.2.png "DateRangePicker Image")
  
 ## Props
 
