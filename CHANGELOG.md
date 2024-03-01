@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.5 (Mar 1, 2024)
+
+- fix dependencies
+
 ## 1.1.4 (Feb 29, 2024)
 
 - add on clean up callback
