@@ -43,10 +43,15 @@ function App() {
     console.log('Selected date range:', date);
   };
 
+  const onClear = () => { 
+    console.log('On clear function');
+  }
+
   return (
     <div>
       <h1>Calendar Component Demo</h1>
       <DateRangePicker
+        onClear={onClear}
         startDate={new Date()}
         endDate={new Date()}
         onChange={handleChange}
