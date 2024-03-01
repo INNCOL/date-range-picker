@@ -18,17 +18,18 @@ import { Day } from './day';
 import { InputRange } from './input-range';
 
 export interface Dates {
-  start: Date | null;
-  end: Date | null;
+  start?: Date;
+  end?: Date;
 }
 
 interface DateRangePickerProps {
   startDate?: Date;
   endDate?: Date;
+  onClear?: () => void;
   onChange: (date: Dates) => void;
 }
 
-export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, startDate = null, endDate = null }) => {
+export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, startDate = null, endDate = null, onClear }) => {
   const [dateRangeText, setDateRangeText] = React.useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(startDate);
@@ -43,12 +44,13 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
 
   const handleClose = () => {
     setAnchorEl(null);
-    onChange({ start: selectedStartDate, end: selectedEndDate });
     setDateRangeText(`${format(selectedStartDate!, 'dd/MM/yyyy')} - ${format(selectedEndDate!, 'dd/MM/yyyy')}`)
+    if (selectedStartDate && selectedEndDate) {
+      onChange({ start: selectedStartDate, end: selectedEndDate });
+    }
   };
 
   const handleDateSelect = (date: Date) => {
-
     if (!selectedStartDate) {
       setSelectedStartDate(date);
     } else if (!selectedEndDate && selectedStartDate.getTime() < date.getTime()) {
@@ -122,6 +124,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({ onChange, star
     setSelectedYear(getYear(today))
     setAnchorEl(null)
     setDateRangeText('')
+    onClear?.();
   }
 
   return (

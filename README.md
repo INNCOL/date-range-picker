@@ -71,8 +71,8 @@ export default App;
 //
 
 type Dates {
-  start: Date;
-  end: Date
+  start?: Date;
+  end?: Date
 }
 
 //
@@ -87,6 +87,9 @@ endDate: Date
 
 // Callback function triggered when the selected date range changes.
 onChange: (dates: Dates) => void
+
+// Callback function triggered when the selected date range is cleared.
+onClear: () => void
 
 ```
 

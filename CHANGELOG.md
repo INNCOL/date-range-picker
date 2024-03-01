@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4 (Feb 29, 2024)
+
+- add on clean up callback
+
 ## 1.1.3 (Feb 10, 2024)
 
 - update read me 
