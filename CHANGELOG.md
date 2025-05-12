@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.6 (May 11, 2025)
+
+- Replaced static icon with `IconButton` for better UX and accessibility.
+- Added `aria-label` to improve accessibility.
+- Styled disabled input for better readability and visual consistency.
+- Improved hover and clickable behavior for calendar icon.
+
 ## 1.1.5 (Mar 1, 2024)
 
 - fix dependencies
